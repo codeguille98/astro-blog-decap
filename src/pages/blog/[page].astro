@@ -1,0 +1,74 @@
+```astro
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+export async function getStaticPaths({ paginate }) {
+  const posts = await getCollection("blog");
+
+  const sortedPosts = posts.sort(
+    (a, b) =>
+      b.data.pubDate.valueOf() -
+      a.data.pubDate.valueOf()
+  );
+
+  const postsPerPage = 5;
+
+  return paginate(sortedPosts, {
+    pageSize: postsPerPage,
+  });
+}
+
+const { page } = Astro.props;
+---
+
+<Layout title={`Página ${page.currentPage} - Blog`}>
+  <h1>Entradas del blog</h1>
+
+  <p>
+    Aquí puedes consultar todas las publicaciones del blog.
+  </p>
+
+  {
+    page.data.map((post) => (
+      <article>
+        <h2>{post.data.title}</h2>
+
+        <p>
+          {post.data.description}
+        </p>
+
+        <p>
+          Publicado por {post.data.author}
+        </p>
+
+        <a href={`/blog/${post.id}`}>
+          Leer post
+        </a>
+      </article>
+    ))
+  }
+
+  <nav>
+    {
+      page.url.prev && (
+        <a href={page.url.prev}>
+          ← Página anterior
+        </a>
+      )
+    }
+
+    <span>
+      Página {page.currentPage} de {page.lastPage}
+    </span>
+
+    {
+      page.url.next && (
+        <a href={page.url.next}>
+          Página siguiente →
+        </a>
+      )
+    }
+  </nav>
+</Layout>
+```

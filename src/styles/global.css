@@ -1,0 +1,89 @@
+/* ==========================================================================
+   1. IMPORTAMOS LAS FUENTES EN PRIMER LUGAR
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inclusive+Sans:ital,wght@0,300..700;1,300..700&display=swap');
+
+/* ==========================================================================
+   2. CORE DE TAILWIND Y PLUGINS
+   ========================================================================== */
+
+@import "tailwindcss";
+
+@plugin "@tailwindcss/typography";
+@plugin "@tailwindcss/typography"; /* El que añadimos antes */
+@plugin "@tailwindcss/forms";      /* Estilos base para formularios limpios */
+@plugin "tailwindcss-animate";     /* Animaciones listas para usar */
+
+/* ==========================================================================
+   3. CONFIGURACIÓN DEL TEMA (Colores, Fuentes, Variables)
+   ========================================================================== */
+@theme {
+  /* Añadimos colores personalizados para nuestra marca */
+  --color-brand-primary: #6366f1;   /* Indigo moderno */
+  --color-brand-success: #10b981;   /* Esmeralda para mensajes de éxito */
+  --color-brand-dark: #0f172a;      /* Pizarra oscuro para fondos */
+
+  /* Extendemos las transiciones por defecto */
+  --animate-fade-in: fade-in 0.3s ease-out;
+}
+
+/* ==========================================================================
+   4. PERSONALIZACIÓN DE LA BASE (Etiquetas HTML Nativas)
+   ========================================================================== */
+@layer base {
+  body {
+    background-color: var(--color-brand-dark);
+    color: #f8fafc; /* slate-50 */
+    font-family: system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  h1 { @apply text-3xl font-bold tracking-tight; }
+
+  /* Estilo de los inputs de nuestros formularios */
+  
+  input, textarea {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    transition: all 0.2s ease;
+  }
+  
+  input:focus {
+    outline: none;
+    border-color: var(--color-brand-primary);
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+  }
+}
+
+/* ==========================================================================
+   5. COMPONENTES Y UTILIDADES PROPIAS (Clases Reutilizables)
+   ========================================================================== */
+   
+/* Nuestro botón principal que usaremos en los formularios */
+@utility btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-brand-primary);
+  color: #ffffff;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: #4f46e5; /* Un tono más oscuro para el hover */
+  }
+}
+
+@utility btn-secondary {
+  @apply bg-indigo-600 text-white px-4 py-2 rounded-lg font-medium 
+         hover:bg-indigo-700 transition-colors shadow-md;
+}
+
+/* Una utilidad personalizada para dar un efecto de brillo al texto */
+@utility text-glow {
+  text-shadow: 0 0 12px rgba(99, 102, 241, 0.6);
+}

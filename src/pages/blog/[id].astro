@@ -1,0 +1,52 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+
+  return posts.map((post) => ({
+    params: {
+      id: post.id,
+    },
+    props: {
+      post,
+    },
+  }));
+}
+
+const { post } = Astro.props;
+
+const { Content } = await render(post);
+---
+
+<Layout title={post.data.title}>
+
+  <article>
+    <h1>{post.data.title}</h1>
+
+    <p>
+      <strong>Autor:</strong> {post.data.author}
+    </p>
+
+    <p>
+      <strong>Fecha:</strong>
+      {post.data.pubDate.toLocaleDateString("es-ES")}
+    </p>
+
+    <p>
+      {post.data.description}
+    </p>
+
+    <hr />
+
+    <Content />
+
+    <hr />
+
+    <a href="/blog">
+      ← Volver al blog
+    </a>
+  </article>
+
+</Layout>

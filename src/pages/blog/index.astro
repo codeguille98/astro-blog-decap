@@ -1,0 +1,51 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+const posts = await getCollection("blog");
+
+const sortedPosts = posts.sort(
+  (a, b) =>
+    b.data.pubDate.valueOf() -
+    a.data.pubDate.valueOf()
+);
+
+const latestPost = sortedPosts[0];
+---
+
+<Layout title="Blog">
+
+  <h1>Mi Blog</h1>
+
+  <p>
+    Bienvenido a mi blog. Aquí encontrarás artículos
+    sobre desarrollo web, programación y tecnología.
+  </p>
+
+  {
+    latestPost && (
+      <section>
+        <h2>Último post</h2>
+
+        <article>
+          <h3>{latestPost.data.title}</h3>
+
+          <p>{latestPost.data.description}</p>
+
+          <p>
+            Publicado por {latestPost.data.author}
+          </p>
+
+          <a href={`/blog/${latestPost.id}`}>
+            Leer post
+          </a>
+        </article>
+      </section>
+    )
+  }
+
+  <a href="/blog">
+    Ver todas las entradas
+  </a>
+
+</Layout>
